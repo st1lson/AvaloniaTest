@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace TestTask.Models
+namespace AvaloniaTest.Models
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

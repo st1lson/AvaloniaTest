@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace TestTask
+namespace AvaloniaTest
 {
     public partial class InfoPage : Window
     {

@@ -1,15 +1,15 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Interactivity;
-using Avalonia.Media;
-using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using TestTask.Models;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Media;
+using AvaloniaTest.Models;
+using HtmlAgilityPack;
 
-namespace TestTask
+namespace AvaloniaTest
 {
     public partial class MainWindow : Window
     {
@@ -52,17 +52,11 @@ namespace TestTask
             HtmlWeb web = new();
             HtmlDocument htmlDoc = web.Load(url);
 
-            var images = htmlDoc.DocumentNode.SelectNodes("//img")
-                .Select(img => new
-                {
-                    Link = img.Attributes["src"].Value
-                })
-                .ToList();
+            string image = htmlDoc.DocumentNode.SelectSingleNode(
+                    "//div[@class='x-column x-sm x-2-3']/img").Attributes["data-lazy-src"].Value;
 
-            string image = images[15].Link;
-
-            HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes(
-                "/html/body/div/div[1]/div/div/div/article/div/div/div/div/div[3]/div/ul[2]/li");
+                HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes(
+                "//ul[@class='x-block-grid two-up']/li");
 
             List<StackPanel> controls = new();
             foreach (var node in nodes)
@@ -87,6 +81,11 @@ namespace TestTask
                 for (int i = 1; i < items.Count; i++)
                 {
                     string item = items[i];
+                    if (string.IsNullOrEmpty(item))
+                    {
+                        continue;
+                    }
+
                     if (item.Contains("CHAPTER"))
                     {
                         continue;

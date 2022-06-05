@@ -1,13 +1,13 @@
-﻿using Avalonia.Controls;
-using Avalonia.Media.Imaging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using Avalonia.Controls;
+using Avalonia.Media.Imaging;
 
-namespace TestTask.Models
+namespace AvaloniaTest.Models
 {
     internal class PlaylistViewModel : ViewModelBase
     {

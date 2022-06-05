@@ -1,7 +1,7 @@
-using Avalonia;
 using System;
+using Avalonia;
 
-namespace TestTask
+namespace AvaloniaTest
 {
     internal class Program
     {
