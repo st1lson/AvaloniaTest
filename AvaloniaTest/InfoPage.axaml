@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+        x:Class="TestTask.InfoPage"
+        Title="InfoPage">
+    <ScrollViewer>
+        <StackPanel>
+            <Image Source="{Binding Image}" Width="150" Height="150"/>
+            <ListBox Items="{Binding Items}" VirtualizationMode="None" Background="White">
+                <ListBox.Styles>
+                    <Style Selector="ListBoxItem">
+                        <Setter Property="Width" Value="500"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:pointerover > Path">
+                        <Setter Property="Fill" Value="Transparent"/>
+                    </Style>
+                    <Style Selector="ListBoxItem:not(:pointerover) > Path">
+                        <Setter Property="Fill" Value="White"/>
+                    </Style>
+                </ListBox.Styles>
+            </ListBox>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

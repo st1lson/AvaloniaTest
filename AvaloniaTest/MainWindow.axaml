@@ -1,0 +1,19 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="TestTask.MainWindow"
+        Title="TestTask">
+    <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500">
+        <TextBlock Text="Enter a link of a page here:" Margin="0, 0, 0, 10"></TextBlock>
+        <TextBox Text="{Binding Url}"></TextBox>
+        <Button Content="Find it out" 
+                Click="Button_OnClick" 
+                HorizontalAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Margin="0, 10, 0, 0"
+                Width="150">
+        </Button>    
+    </StackPanel>
+</Window>
