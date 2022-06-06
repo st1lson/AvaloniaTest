@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Media;
 using AvaloniaTest.Models;
 using HtmlAgilityPack;
@@ -55,10 +59,25 @@ namespace AvaloniaTest
             string image = htmlDoc.DocumentNode.SelectSingleNode(
                     "//div[@class='x-column x-sm x-2-3']/img").Attributes["data-lazy-src"].Value;
 
-                HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes(
+            string author = RemoveTags(WebUtility.HtmlDecode(htmlDoc.DocumentNode.SelectSingleNode(
+                "//h2[@class='h-custom-headline h2']/span").InnerHtml).Trim());
+
+            string playlist = RemoveTags(WebUtility.HtmlDecode(htmlDoc.DocumentNode.SelectSingleNode(
+                "//h3[@class='h-custom-headline h5']/span").InnerHtml).Trim());
+
+            HtmlNodeCollection nodes = htmlDoc.DocumentNode.SelectNodes(
                 "//ul[@class='x-block-grid two-up']/li");
 
             List<StackPanel> controls = new();
+            StackPanel playlistInfo = new StackPanel();
+            playlistInfo.Children.Add(new TabStripItem()
+            {
+                Content = $"{author}\n{playlist}",
+                IsEnabled = false,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                HorizontalContentAlignment = HorizontalAlignment.Center
+            });
+            controls.Add(playlistInfo);
             foreach (var node in nodes)
             {
                 List<string> items = new();
@@ -69,14 +88,15 @@ namespace AvaloniaTest
                         continue;
                     }
 
-                    string text = htmlNode.InnerText;
-                    if (!string.IsNullOrEmpty(text))
+                    string text = RemoveTags(WebUtility.HtmlDecode(htmlNode.InnerText).Trim());
+
+                    if (!string.IsNullOrEmpty(text) && !text.Contains("CHAPTER"))
                     {
-                        items.Add(text.Trim());
+                        items.Add(text);
                     }
                 }
 
-                string playlistName = items[0];
+                string cdName = items[0];
                 List<(string, string)> data = new();
                 for (int i = 1; i < items.Count; i++)
                 {
@@ -86,21 +106,21 @@ namespace AvaloniaTest
                         continue;
                     }
 
-                    if (item.Contains("CHAPTER"))
+                    const string pattern = @"^\d.";
+                    if (Regex.IsMatch(item, pattern))
+                    {
+                        item = Regex.Replace(item, pattern, string.Empty);
+                    }
+
+                    string[] values = item.Split(new[] {'–'}, 2, StringSplitOptions.TrimEntries);
+                    if (values.Length < 2)
                     {
                         continue;
                     }
 
-                    Regex regex = new(@"[\d]");
-                    if (regex.IsMatch(item))
-                    {
-                        item = item.Remove(0, 3);
-                    }
-
-                    string[] values = item.Split('–', 2, StringSplitOptions.TrimEntries);
-                    string author = values[0];
+                    string songAuthor = values[0];
                     string songName = values[1];
-                    data.Add(($"Author: {author}", $"Song name: {songName}"));
+                    data.Add(($"Author: {songAuthor}", $"Song name: {songName}"));
                 }
 
                 StackPanel tab = new();
@@ -115,7 +135,7 @@ namespace AvaloniaTest
                 expanderChildren.Children.AddRange(listItems);
                 Expander expander = new()
                 {
-                    Header = $"Playlist name: {playlistName}",
+                    Header = cdName,
                     Content = expanderChildren,
                 };
                 tab.Children.Add(expander);
@@ -124,6 +144,12 @@ namespace AvaloniaTest
             }
 
             return new PlaylistViewModel(controls, image);
+        }
+
+        private static string RemoveTags(string input)
+        {
+            string pattern = @"\<\s*br\s*\/?\s*\>";
+            return Regex.IsMatch(input, pattern) ? Regex.Replace(input, pattern, string.Empty) : input;
         }
     }
 }
