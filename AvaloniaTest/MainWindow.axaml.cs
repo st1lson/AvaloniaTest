@@ -96,7 +96,7 @@ namespace AvaloniaTest
                 }
 
                 string cdName = items[0];
-                List<(string, string)> data = new();
+                List<Song> data = new();
                 for (int i = 1; i < items.Count; i++)
                 {
                     string item = items[i];
@@ -117,16 +117,16 @@ namespace AvaloniaTest
                         continue;
                     }
 
-                    string songAuthor = values[0];
+                    string artist = values[0];
                     string songName = values[1];
-                    data.Add(($"Author: {songAuthor}", $"Song name: {songName}"));
+                    data.Add(new Song(songName, artist));
                 }
 
                 StackPanel tab = new();
 
-                List<ListBoxItem> listItems = data.Select(tuple => new ListBoxItem()
+                List<ListBoxItem> listItems = data.Select(s => new ListBoxItem()
                 {
-                    Content = $"{tuple.Item1}\n{tuple.Item2}",
+                    Content = $"{s.Artist}\n{s.Name}",
                     Margin = new Thickness(10, 0, 0, 0)
                 }).ToList();
 
