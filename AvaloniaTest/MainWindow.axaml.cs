@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Text.RegularExpressions;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -12,6 +6,11 @@ using Avalonia.Layout;
 using Avalonia.Media;
 using AvaloniaTest.Models;
 using HtmlAgilityPack;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
 
 namespace AvaloniaTest
 {
@@ -69,7 +68,7 @@ namespace AvaloniaTest
                 "//ul[@class='x-block-grid two-up']/li");
 
             List<StackPanel> controls = new();
-            StackPanel playlistInfo = new StackPanel();
+            StackPanel playlistInfo = new();
             playlistInfo.Children.Add(new TabStripItem()
             {
                 Content = $"{author}\n{playlist}",
@@ -112,7 +111,7 @@ namespace AvaloniaTest
                         item = Regex.Replace(item, pattern, string.Empty);
                     }
 
-                    string[] values = item.Split(new[] {'–'}, 2, StringSplitOptions.TrimEntries);
+                    string[] values = item.Split(new[] { '–' }, 2, StringSplitOptions.TrimEntries);
                     if (values.Length < 2)
                     {
                         continue;

@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using JetBrains.Annotations;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using JetBrains.Annotations;
 
 namespace AvaloniaTest.Models
 {
